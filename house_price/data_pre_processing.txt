@@ -1,0 +1,15 @@
+1. Outlier Removal: Manually identified and dropped extreme values.
+
+2. Missing Value Imputation: Filled null values (e.g., 'No' for categorical, 0 for numerical).
+
+3. Column Dropping: Removed low-impact or redundant columns (e.g., PoolQC, GarageArea).
+
+4. Feature Engineering: Created new aggregated features (e.g., houseage, totalsf, totalbaths).
+
+5. Target Transformation: Applied log1p to SalePrice to normalize its distribution.
+
+6. Categorical Encoding: Used One-Hot and Ordinal encoding for string features.
+
+7. Feature Scaling: Standardized numerical data using StandardScaler.
+
+8. Data Splitting: Divided the dataset into training (80%) and testing (20%) sets.

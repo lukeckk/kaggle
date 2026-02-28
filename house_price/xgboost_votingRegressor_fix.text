@@ -1,0 +1,51 @@
+XGBoost + VotingRegressor Fix Notes
+===================================
+
+Issue observed
+--------------
+- Error when fitting voting regressor:
+  ValueError: The estimator XGBRegressor should be a regressor.
+- In some runs, XGBoost also failed with:
+  AttributeError: 'super' object has no attribute '__sklearn_tags__'
+- Another related failure seen earlier:
+  ValueError: Mismatched version between Python package and native shared object.
+
+Root causes
+-----------
+1) Package source/version mismatch:
+   - pip xgboost and conda libxgboost were mixed at different versions.
+   - This caused native library mismatch (Python package version != libxgboost.dylib version).
+
+2) sklearn/xgboost compatibility:
+   - xgboost 2.1.1 with newer sklearn tag validation (1.6+ in this environment path)
+     caused estimator tag validation failures in meta-estimators like VotingRegressor.
+   - VotingRegressor syntax was correct; compatibility was the issue.
+
+What fixed it
+-------------
+- Use consistent versions in the same environment:
+  - xgboost==2.1.1
+  - scikit-learn==1.5.2
+- Remove monkey patches that changed XGBRegressor internals (e.g., __bases__ edits).
+- Restart kernel after dependency or class-level changes.
+
+Commands used
+-------------
+python -m pip install xgboost==2.1.1
+python -m pip install scikit-learn==1.5.2
+
+Verification
+------------
+python -c "import sklearn, xgboost; print(sklearn.__version__, xgboost.__version__)"
+python -c "from sklearn.base import is_regressor; from xgboost import XGBRegressor; print(is_regressor(XGBRegressor()))"
+
+Expected output:
+- sklearn 1.5.2
+- xgboost 2.1.1
+- is_regressor(...) -> True
+
+Notebook guidance
+-----------------
+- Keep package install/uninstall commands out of notebook run-all flow.
+- Do dependency changes in terminal, then restart kernel.
+- Avoid runtime monkey-patching XGBoost class inheritance.
