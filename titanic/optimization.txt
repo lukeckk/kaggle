@@ -1,0 +1,37 @@
+Current Score: 0.77 (Kaggle), 0.80 (local)
+
+1. Feature Engineering
+   - Extract titles from Name (Mr, Mrs, Miss, Master) — strong survival signal
+   - Bin Age into groups (Child, Teen, Adult, Senior) — children had higher survival rates
+   - Create Fare bins (low, mid, high) — fare correlates with class and survival
+   - Extract deck letter from Cabin before dropping it (A, B, C... correlate with survival)
+
+2. Try Stronger Models
+   - Random Forest — handles non-linear relationships, less prone to overfitting than a single tree
+   - Gradient Boosting (XGBoost, LightGBM) — typically top performers on tabular data
+   - Support Vector Machine (SVM) — can work well on smaller datasets like Titanic
+   - Voting Ensemble — combine predictions from multiple models to reduce variance
+
+3. Hyperparameter Tuning
+   - Use GridSearchCV or RandomizedSearchCV to find the best model parameters
+   - For Logistic Regression: tune regularization strength (C)
+   - For Random Forest: tune n_estimators, max_depth, min_samples_split
+   - For XGBoost: tune learning_rate, max_depth, n_estimators, subsample
+
+4. Cross-Validation
+   - Use cross_val_score with cv=5 or cv=10 for a more reliable local estimate
+   - Reduces variance from a single train/test split
+
+5. Handle Class Imbalance
+   - Check if survived (1) vs. died (0) ratio is imbalanced
+   - Use class_weight='balanced' in the model or oversample the minority class (SMOTE)
+
+6. Remove Low-Correlation Features
+   - Based on corr() results, consider dropping FamilySize (0.016) as it adds little signal
+   - SibSp (-0.035) and Parch (0.082) individually are weak — FamilySize already captures them
+
+7. Use Ordinal Encoding for Pclass
+   - Pclass is already numeric (1, 2, 3) but treating it as ordinal in encoding may improve results
+
+8. Outlier Removal
+   - Remove extreme Fare outliers that may distort the model

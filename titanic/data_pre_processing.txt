@@ -1,0 +1,17 @@
+1. Outlier Detection: Used histplots (continuous features) and barplots (categorical features) to visually identify outliers and check for bias in each feature relative to Survived.
+
+2. Column Dropping: Removed low-impact or redundant columns (PassengerId, Name, Ticket, Cabin).
+
+3. Missing Value Imputation: Handled inside the sklearn Pipeline using SimpleImputer (median for numeric, most_frequent for categorical).
+
+4. Feature Engineering: Created new aggregated features (FamilySize = SibSp + Parch + 1, IsAlone = 1 if FamilySize == 1).
+
+5. Categorical Encoding: Handled inside the sklearn Pipeline using OneHotEncoder for Sex and Embarked.
+
+6. Feature Scaling: Handled inside the sklearn Pipeline using StandardScaler for numeric features.
+
+7. Correlation Analysis: Used pd.get_dummies on a copy of train_df to encode string columns, then ran corr()['Survived'] and a heatmap to identify feature importance.
+
+8. Data Splitting: Divided the dataset into training (80%) and testing (20%) sets using train_test_split.
+
+9. Model Training & Evaluation: Trained a Logistic Regression model inside a Pipeline, evaluated using accuracy_score and classification_report.
